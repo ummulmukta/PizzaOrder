@@ -22,6 +22,7 @@ public class TestBase {
 
     private void navigateToSite() {
         driver.get(url);
+        driver.manage().window().maximize();
     }
 
     @AfterClass(alwaysRun = true)
@@ -39,7 +40,7 @@ public class TestBase {
                 System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver/mac/chromedriver");
             } else {
                 System.setProperty("webdriver.chrome.driver",
-                        "src/test/resources/chromedriver/windows/chromedriver.exe");
+                        "src/test/resources/chromedriver/windowsLatest/chromedriver.exe");
             }
             driver = new ChromeDriver();
         }
