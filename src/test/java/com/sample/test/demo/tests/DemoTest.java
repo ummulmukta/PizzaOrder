@@ -10,7 +10,7 @@ import com.sample.test.demo.TestBase;
 
 public class DemoTest extends TestBase {
 
-	Select select;
+	Select selectPizza;
 	Select selectToppings1;
 	Select selectToppings2;
 	WebElement pizzaQuantity;
@@ -22,19 +22,42 @@ public class DemoTest extends TestBase {
 	String orderSuccessExpectedMessage;
 	String actualOrderSuccessMessage;
 
+	String topping1_xpath = "//div[@id='pizza1']//select[@class='toppings1']";
+	String selectToppings2_xpath = "//div[@id='pizza1']//select[@class='toppings2']";
+	String selectPizza_id = "pizza1Pizza";
+
 	@Test
 	public void demoTest() {
 		System.out.println("HELLO WORLD");
 
 	}
 
+	//This test case validate happy path with successful pizza order process
 	@Test
-	public void sucessfulOrder() throws InterruptedException {
+	public void sucessfulOrder() {
 
-		choosePizza();
-		getToppings1();
-		getToppings2();
-		enterQuantity();
+		choosePizza(selectPizza_id, 1);
+		getToppings(topping1_xpath, "Mushrooms");
+		getToppings(selectToppings2_xpath, "Classic Pepperoni");
+		enterQuantity("2");
+		getName();
+		getEmail();
+		getPhone();
+		placeOrder();
+		selectCashPayment();
+		orderScucess();
+
+	}
+	
+	
+	//This test case validate unhappy path with and error of the pizza order process
+	@Test
+	public void orderWithError() {
+		choosePizza(selectPizza_id, 2);
+		getToppings(topping1_xpath, "Mushrooms");
+		getToppings(selectToppings2_xpath, "Classic Pepperoni");
+		enterQuantity("-2");
+
 		getName();
 		getEmail();
 		getPhone();
@@ -44,89 +67,68 @@ public class DemoTest extends TestBase {
 
 	}
 
-	@Test
-	public void orderWithError() throws InterruptedException {
-		choosePizza();
-		getToppings1();
-		getToppings2();
-		invalidQuantity();
-		getName();
-		getEmail();
-		getPhone();
-		placeOrder();
-		selectCashPayment();
-		orderScucess();
+	//reusable method to choose a pizza
+	public void choosePizza(String id, int index) {
+
+		selectPizza = new Select(driver.findElement(By.id(id)));
+		selectPizza.selectByIndex(index);
 
 	}
 
-	public void getToppings1() throws InterruptedException {
-		selectToppings1 = new Select(driver.findElement(By.xpath("//div[@id='pizza1']//select[@class='toppings1']")));
-		selectToppings1.selectByVisibleText("Mushrooms");
-		Thread.sleep(1000);
+	//reusable method to select a topping
+	public void getToppings(String xpath, String vText) {
+		selectToppings1 = new Select(driver.findElement(By.xpath(xpath)));
+
+		selectToppings1.selectByVisibleText(vText);
+
 	}
 
-	public void getToppings2() throws InterruptedException {
-		selectToppings2 = new Select(driver.findElement(By.xpath("//div[@id='pizza1']//select[@class='toppings2']")));
-		selectToppings2.selectByVisibleText("Classic Pepperoni");
-		Thread.sleep(1000);
-	}
-
-	public void enterQuantity() {
+	//method that accepts quantity
+	public void enterQuantity(String quantity) {
 		pizzaQuantity = driver.findElement(By.id("pizza1Qty"));
-		pizzaQuantity.sendKeys("2");
+		pizzaQuantity.sendKeys(quantity);
 		pizzaQuantity.sendKeys(Keys.ENTER);
 	}
 
-	public void getName() throws InterruptedException {
+	public void getName() {
 		name = driver.findElement(By.id("name"));
 		name.sendKeys("Ummul Mukta");
-		Thread.sleep(1000);
+
 	}
 
-	public void getEmail() throws InterruptedException {
+	public void getEmail() {
 		email = driver.findElement(By.id("email"));
 		email.sendKeys("ummulmukta@gmail.com");
-		Thread.sleep(1000);
+
 	}
 
-	public void getPhone() throws InterruptedException {
+	public void getPhone() {
 		phone = driver.findElement(By.id("phone"));
 		phone.sendKeys("646-515-0529");
-		Thread.sleep(1000);
+
 	}
 
-	public void placeOrder() throws InterruptedException {
+	public void placeOrder() {
 		placeOrderButton = driver.findElement(By.id("placeOrder"));
-		Thread.sleep(1000);
+
 		placeOrderButton.click();
 	}
 
-	public void selectCashPayment() throws InterruptedException {
+	public void selectCashPayment() {
 		radioCash = driver.findElement(By.id("cashpayment"));
-		Thread.sleep(1000);
+
 		radioCash.click();
 	}
 
-	public void orderScucess() throws InterruptedException {
+	public void orderScucess() {
 		orderSuccessExpectedMessage = "Thank you for your order! TOTAL: 13.5 Small 6 Slices - no toppings";
 
 		actualOrderSuccessMessage = driver.findElement(By.xpath("//div[@id='dialog']/p")).getText();
 		System.out.println(actualOrderSuccessMessage);
-		Thread.sleep(1000);
+
 		Assert.assertEquals(actualOrderSuccessMessage, orderSuccessExpectedMessage);
 
 	}
 
-	public void choosePizza() throws InterruptedException {
-		select = new Select(driver.findElement(By.id("pizza1Pizza")));
-		select.selectByIndex(1);
-		Thread.sleep(1000);
-	}
-
-	public void invalidQuantity() {
-		pizzaQuantity = driver.findElement(By.id("pizza1Qty"));
-		pizzaQuantity.sendKeys("-2");
-		pizzaQuantity.sendKeys(Keys.ENTER);
-	}
-
+	
 }

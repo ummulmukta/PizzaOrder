@@ -1,0 +1,34 @@
+
+
+
+Possible testcases:
+
+1. Validate each pizza choices small, medium, large (all options)
+2. Validate toppings choices - two topping pizza with all possible toppings
+3. Validate no topping pizza with topping choices
+4. Validate different valid quantity - such as 1, 10, 5, 20
+5. Validate invalid quantity -  0 or any negative number
+6. Validate cost calculation is correct
+7. Validate mandatory fields name, and phone with empty input
+8. Validate mandatory field with valid inputs
+9. Validate payment information - Credit card and Cash on Pickup
+10. validate page title, labels of the forms
+11. Validate Reset and Place Order button 
+
+
+
+
+
+
+
+Defects or issues observed:
+
+1. While choosing no topping pizza - application still give topping option
+2. Quantity field accepting negative number which is not valid for any order
+3.After adding Toppings 1 and Toppings2,the additional toppings cost is not adding with cost.
+4. Customer can check both radio buttons in Payment information at the same time
+5.Once selecting one radio button in payment information , it can not be disabled.
+6.After click on reset button Toppings 1 and Toppings 2 fields are not resetting.
+Last selected options are still displayed.
+7.There is no space in Toppings and 2(Toppings2) - typo(?).
+
